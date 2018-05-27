@@ -1,0 +1,42 @@
+If we lost all spfile copies and DB is not open, alert.log is not avilable and we do not have any backup of the spfile
+in this case we can create a new pfile and just define the following parameters 
+DB name, control file names and locations,and compatible parameter.
+then we can startup the DB.
+ 
+SQL> startup
+ORA-01078: failure in processing system parameters
+LRM-00109: could not open parameter file '/database/app/oracle/product/12.1.2/db_home1/dbs/initncscm.ora'
+We need to create the pfile.ora under the follwing directory:
+$cd /database/app/oracle/product/12.1.2/db_home1/dbs
+$vi initncscm.ora
+db_name=ncscm
+control_files='/database/app/oracle/oradata/ncscm/control01.ctl',
+'/fra/ncscm/control02.ctl'
+compatible=12.1.0.2.0
+SQL> startup nomount
+ORACLE instance started.
+
+Total System Global Area  218103808 bytes
+Fixed Size		    2922712 bytes
+Variable Size		  159385384 bytes
+Database Buffers	   50331648 bytes
+Redo Buffers		    5464064 bytes
+SQL> create spfile from pfile;
+
+File created.
+
+SQL> shu immediate
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area  218103808 bytes
+Fixed Size		    2922712 bytes
+Variable Size		  159385384 bytes
+Database Buffers	   50331648 bytes
+Redo Buffers		    5464064 bytes
+Database mounted.
+Database opened.
