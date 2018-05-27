@@ -1,0 +1,41 @@
+If we lost an spfile file and we have a backup of it, we can restore it from this backup.
+These are the required steps to restore the SPFILE from the backup:
+RMAN> startup force nomount 
+MAN> restore spfile from '/fra/NCSCM/autobackup/2018_05_10/o1_mf_s_975750557_fh8mgxv7_.bkp';
+
+Starting restore at 10-MAY-18
+using channel ORA_DISK_1
+
+channel ORA_DISK_1: restoring spfile from AUTOBACKUP /fra/NCSCM/autobackup/2018_05_10/o1_mf_s_975750557_fh8mgxv7_.bkp
+channel ORA_DISK_1: SPFILE restore from AUTOBACKUP complete
+Finished restore at 10-MAY-18
+
+SQL> select status from v$instance;
+
+STATUS
+------------
+STARTED
+
+SQL> alter database mount;
+alter database mount
+*
+ERROR at line 1:
+ORA-00205: error in identifying control file, check alert log for more info
+
+
+SQL> shu immediate
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area  218103808 bytes
+Fixed Size		    2922712 bytes
+Variable Size		  159385384 bytes
+Database Buffers	   50331648 bytes
+Redo Buffers		    5464064 bytes
+Database mounted.
+Database opened.
+
