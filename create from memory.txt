@@ -1,0 +1,45 @@
+If we lost all spfile copies and DB is still open, we can create pfile from memory then we create spfile from pfile.
+
+SQL> select status from v$instance;
+
+STATUS
+------------
+OPEN
+
+
+SQL> create pfile from memory;
+
+File created.
+
+SQL> shu immediate
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+SQL> startup nomount
+ORACLE instance started.
+
+Total System Global Area  796917760 bytes
+Fixed Size		    2929448 bytes
+Variable Size		  591400152 bytes
+Database Buffers	  197132288 bytes
+Redo Buffers		    5455872 bytes
+SQL> create spfile from pfile;
+
+File created.
+
+We need to shutdown the DB to start with spfile.
+SQL> shu immediate
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area  796917760 bytes
+Fixed Size		    2929448 bytes
+Variable Size		  587205848 bytes
+Database Buffers	  201326592 bytes
+Redo Buffers		    5455872 bytes
+Database mounted.
+Database opened.
